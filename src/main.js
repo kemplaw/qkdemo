@@ -1,12 +1,26 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import { registerMicroApps, start, setDefaultMountApp } from 'qiankun'
+import { render } from './render'
 
-Vue.config.productionTip = false
+render()
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+registerMicroApps(
+  [
+    {
+      name: 'reactTodo',
+      entry: '//localhost:3000',
+      container: '#sub-app-container',
+      activeRule: '/'
+    }
+  ],
+  {
+    afterMount() {
+      console.log('subapp loaded')
+    },
+    beforeUnmount() {
+      console.log('before subapp unmount')
+    }
+  }
+)
+
+setDefaultMountApp('/')
+start()
